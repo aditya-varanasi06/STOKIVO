@@ -1,0 +1,1 @@
+"""Stokivo application package."""

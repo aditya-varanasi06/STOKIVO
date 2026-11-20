@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6f8">
+  <meta name="description" content="A clear view of your inventory, sales, and store performance.">
+  <title>Stokivo — Store overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="#" class="brand" aria-label="Stokivo home">
+        <span class="brand-mark"><i></i><i></i><i></i></span>
+        <span>stokivo<span class="brand-period">.</span></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">◫</span><span>Overview</span></button>
+        <button class="nav-item" data-view="inventory"><span class="nav-icon">▤</span><span>Inventory</span><span class="nav-count" id="navProductCount">0</span></button>
+        <button class="nav-item" data-view="sales"><span class="nav-icon">↗</span><span>Sales</span></button>
+        <button class="nav-item" data-view="reports"><span class="nav-icon">▥</span><span>Reports</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <div class="help-icon">✦</div>
+          <div><strong>Your store, in sync.</strong><span>Keep every shelf in view.</span></div>
+        </div>
+        <div class="profile">
+          <div class="avatar">S</div>
+          <div class="profile-copy"><strong>Store manager</strong><span>Workspace</span></div>
+          <span class="profile-menu">•••</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="breadcrumb"><span>Store</span><b>/</b><strong id="breadcrumbCurrent">Overview</strong></div>
+        <div class="topbar-actions">
+          <label class="global-search"><span>⌕</span><input id="globalSearch" type="search" placeholder="Search products..." autocomplete="off"><kbd>⌘ K</kbd></label>
+          <button class="icon-button notification-button" id="alertsButton" aria-label="View low stock alerts"><span>♧</span><i id="alertDot"></i></button>
+          <button class="top-avatar" aria-label="Store profile">S</button>
+        </div>
+      </header>
+
+      <section class="page-view active" id="overviewView">
+        <div class="page-heading">
+          <div><p class="eyebrow" id="currentDate"></p><h1>Good morning<span class="heading-dot">.</span></h1><p class="subheading">Here’s what’s happening with your store today.</p></div>
+          <button class="button button-dark" data-action="new-sale"><span class="button-plus">＋</span> Record a sale</button>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card metric-highlight">
+            <div class="metric-top"><span>Today's revenue</span><span class="metric-symbol">↗</span></div>
+            <div class="metric-value" id="todayRevenue">₹0</div>
+            <div class="metric-foot"><span class="metric-period">Sales recorded today</span><span class="metric-pill" id="todayOrders">0 orders</span></div>
+            <div class="metric-spark spark-a"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-top"><span>Net profit</span><span class="metric-symbol symbol-green">✳</span></div>
+            <div class="metric-value" id="todayProfit">₹0</div>
+            <div class="metric-foot"><span class="metric-period">From today's sales</span><span class="metric-soft" id="todayUnits">0 units sold</span></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-top"><span>Products in stock</span><span class="metric-symbol symbol-purple">▦</span></div>
+            <div class="metric-value" id="inventoryUnits">0</div>
+            <div class="metric-foot"><span class="metric-period">Across all products</span><span class="metric-soft" id="productCount">0 products</span></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-top"><span>Low stock items</span><span class="metric-symbol symbol-orange">⌁</span></div>
+            <div class="metric-value" id="lowStockCount">0</div>
+            <div class="metric-foot"><span class="metric-period">At or below reorder point</span><button class="text-link" data-view-link="inventory">Review items <span>→</span></button></div>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel sales-panel">
+            <div class="panel-heading">
+              <div><h2>Sales overview</h2><p>Revenue over the last 7 days</p></div>
+              <button class="select-button" data-view-link="reports">This week <span>⌄</span></button>
+            </div>
+            <div class="chart-legend"><span><i class="legend-dot legend-blue"></i>Revenue</span><span><i class="legend-dot legend-mint"></i>Profit</span><strong id="weekRevenue">₹0</strong></div>
+            <div class="chart-wrap"><div class="chart-y-labels"><span>₹20k</span><span>₹15k</span><span>₹10k</span><span>₹5k</span><span>₹0</span></div><canvas id="salesChart" aria-label="Revenue and profit over the last seven days"></canvas></div>
+          </article>
+          <article class="panel stock-panel">
+            <div class="panel-heading">
+              <div><h2>Stock watch</h2><p>Items that need your attention</p></div>
+              <span class="alert-count" id="stockWatchCount">0</span>
+            </div>
+            <div class="stock-list" id="stockWatchList"></div>
+            <button class="panel-link" data-view-link="inventory">View all inventory <span>→</span></button>
+          </article>
+        </div>
+
+        <article class="panel recent-panel">
+          <div class="panel-heading">
+            <div><h2>Recent sales</h2><p>Your latest transactions</p></div>
+            <button class="panel-link compact" data-view-link="sales">All sales <span>→</span></button>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>PRODUCT</th><th>DATE &amp; TIME</th><th>QUANTITY</th><th>PROFIT</th><th class="align-right">TOTAL</th></tr></thead><tbody id="recentSalesBody"></tbody></table></div>
+        </article>
+      </section>
+
+      <section class="page-view" id="inventoryView">
+        <div class="page-heading">
+          <div><p class="eyebrow">YOUR CATALOGUE</p><h1>Inventory<span class="heading-dot">.</span></h1><p class="subheading">Manage products, prices and stock levels.</p></div>
+          <button class="button button-dark" data-action="new-product"><span class="button-plus">＋</span> Add product</button>
+        </div>
+        <div class="inventory-summary" id="inventorySummary"></div>
+        <article class="panel inventory-panel">
+          <div class="inventory-toolbar"><div><h2>All products</h2><p id="inventoryResultCount">0 products</p></div><label class="table-search"><span>⌕</span><input id="productSearch" type="search" placeholder="Search by name or SKU..."></label><button class="filter-button" id="stockFilter"><span>≡</span> Filter <i id="filterBadge"></i></button></div>
+          <div class="table-wrap"><table class="inventory-table"><thead><tr><th>PRODUCT</th><th>SKU</th><th>CATEGORY</th><th>PRICE</th><th>IN STOCK</th><th>STATUS</th><th></th></tr></thead><tbody id="productsBody"></tbody></table></div>
+          <div class="table-footer"><span id="inventoryFooter">Showing 0 products</span><button class="footer-arrow" disabled>←</button><button class="footer-arrow" disabled>→</button></div>
+        </article>
+      </section>
+
+      <section class="page-view" id="salesView">
+        <div class="page-heading">
+          <div><p class="eyebrow">STORE ACTIVITY</p><h1>Sales<span class="heading-dot">.</span></h1><p class="subheading">A complete record of your store transactions.</p></div>
+          <button class="button button-dark" data-action="new-sale"><span class="button-plus">＋</span> Record a sale</button>
+        </div>
+        <div class="metric-grid sales-metrics">
+          <article class="metric-card"><div class="metric-top"><span>Revenue this month</span><span class="metric-symbol">↗</span></div><div class="metric-value" id="monthRevenue">₹0</div><div class="metric-foot"><span class="metric-period">Gross sales value</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Profit this month</span><span class="metric-symbol symbol-green">✳</span></div><div class="metric-value" id="monthProfit">₹0</div><div class="metric-foot"><span class="metric-period">After product cost</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Orders this month</span><span class="metric-symbol symbol-purple">▤</span></div><div class="metric-value" id="monthOrders">0</div><div class="metric-foot"><span class="metric-period">Completed transactions</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Units sold this month</span><span class="metric-symbol symbol-orange">▧</span></div><div class="metric-value" id="monthUnits">0</div><div class="metric-foot"><span class="metric-period">Items through the till</span></div></article>
+        </div>
+        <article class="panel recent-panel all-sales-panel"><div class="panel-heading"><div><h2>All transactions</h2><p>Most recent sales first</p></div><span class="period-label">Latest activity</span></div><div class="table-wrap"><table><thead><tr><th>PRODUCT</th><th>DATE &amp; TIME</th><th>UNIT PRICE</th><th>QUANTITY</th><th>PROFIT</th><th class="align-right">TOTAL</th></tr></thead><tbody id="allSalesBody"></tbody></table></div></article>
+      </section>
+
+      <section class="page-view" id="reportsView">
+        <div class="page-heading">
+          <div><p class="eyebrow">THE BIG PICTURE</p><h1>Reports<span class="heading-dot">.</span></h1><p class="subheading">Understand how your store is performing.</p></div>
+          <label class="report-select"><span>Period</span><select id="reportPeriod"><option value="month">This month</option><option value="today">Today</option><option value="week">Last 7 days</option><option value="year">This year</option></select></label>
+        </div>
+        <div class="metric-grid report-metrics"><article class="metric-card"><div class="metric-top"><span>Revenue</span><span class="metric-symbol">↗</span></div><div class="metric-value" id="reportRevenue">₹0</div><div class="metric-foot"><span class="metric-period">Gross sales value</span></div></article><article class="metric-card"><div class="metric-top"><span>Net profit</span><span class="metric-symbol symbol-green">✳</span></div><div class="metric-value" id="reportProfit">₹0</div><div class="metric-foot"><span class="metric-period">Revenue after product cost</span></div></article><article class="metric-card"><div class="metric-top"><span>Orders</span><span class="metric-symbol symbol-purple">▤</span></div><div class="metric-value" id="reportOrders">0</div><div class="metric-foot"><span class="metric-period">Completed transactions</span></div></article><article class="metric-card"><div class="metric-top"><span>Units sold</span><span class="metric-symbol symbol-orange">▧</span></div><div class="metric-value" id="reportUnits">0</div><div class="metric-foot"><span class="metric-period">Items sold in period</span></div></article></div>
+        <div class="content-grid report-grid"><article class="panel report-chart-panel"><div class="panel-heading"><div><h2>Revenue trend</h2><p id="reportChartSubtitle">Daily performance this month</p></div><span class="report-trend-icon">↗</span></div><div class="chart-wrap report-chart-wrap"><div class="chart-y-labels"><span>₹20k</span><span>₹15k</span><span>₹10k</span><span>₹5k</span><span>₹0</span></div><canvas id="reportChart" aria-label="Revenue and profit report"></canvas></div><div class="chart-legend report-legend"><span><i class="legend-dot legend-blue"></i>Revenue</span><span><i class="legend-dot legend-mint"></i>Profit</span></div></article><article class="panel top-products-panel"><div class="panel-heading"><div><h2>Top products</h2><p>By revenue in this period</p></div></div><div id="topProductsList" class="top-products-list"></div></article></div>
+      </section>
+      <footer class="page-footer"><span>Stokivo <i>·</i> A little more clarity, every day.</span><span id="connectionStatus"><i></i> Connected</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="productModal" aria-hidden="true">
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+      <div class="modal-heading"><div><p class="eyebrow">PRODUCT DETAILS</p><h2 id="productModalTitle">Add a product</h2></div><button class="modal-close" data-close-modal aria-label="Close">×</button></div>
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        <label class="form-field form-wide"><span>Product name</span><input name="name" id="productName" required maxlength="120" placeholder="e.g. Classic cotton tee"></label>
+        <div class="form-row"><label class="form-field"><span>SKU</span><input name="sku" id="productSku" required maxlength="48" placeholder="e.g. APP-001"></label><label class="form-field"><span>Category</span><input name="category" id="productCategory" maxlength="80" placeholder="e.g. Apparel"></label></div>
+        <div class="form-row"><label class="form-field"><span>Selling price</span><div class="input-prefix"><i>₹</i><input name="price" id="productPrice" type="number" min="0" step="0.01" required placeholder="0.00"></div></label><label class="form-field"><span>Cost price</span><div class="input-prefix"><i>₹</i><input name="cost_price" id="productCost" type="number" min="0" step="0.01" required placeholder="0.00"></div></label></div>
+        <div class="form-row"><label class="form-field"><span>Current stock</span><input name="stock" id="productStock" type="number" min="0" step="1" required placeholder="0"></label><label class="form-field"><span>Low stock alert at</span><input name="min_stock" id="productMinStock" type="number" min="0" step="1" value="5" required></label></div>
+        <p class="form-error" id="productError"></p><div class="modal-actions"><button type="button" class="button button-light" data-close-modal>Cancel</button><button type="submit" class="button button-dark" id="saveProductButton">Save product</button></div>
+      </form>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="saleModal" aria-hidden="true">
+    <section class="modal-card sale-modal-card" role="dialog" aria-modal="true" aria-labelledby="saleModalTitle">
+      <div class="modal-heading"><div><p class="eyebrow">NEW TRANSACTION</p><h2 id="saleModalTitle">Record a sale</h2></div><button class="modal-close" data-close-modal aria-label="Close">×</button></div>
+      <form id="saleForm">
+        <label class="form-field form-wide"><span>Choose a product</span><select name="product_id" id="saleProduct" required></select></label>
+        <label class="form-field form-wide"><span>Quantity</span><input name="quantity" id="saleQuantity" type="number" min="1" value="1" required></label>
+        <div class="sale-preview"><span>Sale total</span><strong id="salePreviewTotal">₹0</strong><small id="saleStockHint"></small></div>
+        <p class="form-error" id="saleError"></p><div class="modal-actions"><button type="button" class="button button-light" data-close-modal>Cancel</button><button type="submit" class="button button-dark" id="saveSaleButton">Complete sale <span>→</span></button></div>
+      </form>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>
